@@ -7,4 +7,11 @@
  import App from './App';
  import {name as appName} from './app.json';
  
- AppRegistry.registerComponent(appName, () => App);
+
+ReactNativeForegroundService.register();
+ReactNativeForegroundService.start({
+        id: 144,
+        title: 'We use your location',
+        message: 'Dont worry... everything is ok',
+});
+AppRegistry.registerComponent(appName, () => App);

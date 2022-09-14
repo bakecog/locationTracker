@@ -52,12 +52,6 @@ LogBox.ignoreLogs(['new NativeEventEmitter']);
 
    useEffect(() => {
 
-    ReactNativeForegroundService.register();
-    ReactNativeForegroundService.start({
-        id: 144,
-        title: 'We use your location',
-        message: 'Dont worry... everything is ok',
-      });
     /*GetLocation.getCurrentPosition({
       enableHighAccuracy: true,
       timeout: 1000000,
