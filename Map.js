@@ -11,16 +11,7 @@ export default function Location(props) {
         longitudeDelta: 0.0421
     };
 
-    /* 
-         <MapView.Marker
-                    coordinate={{latitude: latitude,
-                    longitude:longitude}}
-                    title={"title"}
-                    description={"description"}
-        />
-        <MapView style={styles.map} initialRegion={region}>
-            </MapView>
-    */
+
     return  (
         <MapView style={styles.map} initialRegion={region}>
             <Marker

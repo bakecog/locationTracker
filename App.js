@@ -25,7 +25,10 @@ import Location from './Map';
 LogBox.ignoreLogs(['LocationError: Location cancelled by another request']);
 LogBox.ignoreLogs(['new NativeEventEmitter']);
  
- let targetPermission = Platform.OS === 'ios' ? PERMISSIONS.IOS.LOCATION_ALWAYS : PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION
+export const deviceOS = Platform.OS;
+
+let targetPermission = deviceOS === 'ios' ? PERMISSIONS.IOS.LOCATION_ALWAYS : PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION
+
 
  export default function App(){
 
@@ -33,18 +36,7 @@ LogBox.ignoreLogs(['new NativeEventEmitter']);
   const [userLocation, setUserLocation] = useState(null);
   const [permissionGranted,setPermissions] = useState(false);
 
-  GetLocation.getCurrentPosition({
-    enableHighAccuracy: true,
-    timeout: 1000000,
-  })
-  .then(location => {
-      console.log(location);
-      setUserLocation({
-        latitude: location.latitude,
-        longitude: location.longitude
-      });
-
-  })
+ 
 
   function getLocationHandler() {
     setToggle(!isToggleOn);
@@ -52,7 +44,7 @@ LogBox.ignoreLogs(['new NativeEventEmitter']);
 
    useEffect(() => {
 
-    /*GetLocation.getCurrentPosition({
+    GetLocation.getCurrentPosition({
       enableHighAccuracy: true,
       timeout: 1000000,
     })
@@ -63,7 +55,7 @@ LogBox.ignoreLogs(['new NativeEventEmitter']);
           longitude: location.longitude
         });
 
-    })*/
+    })
     /*setUserLocation({
       latitude: 37.78825,
       longitude: -122.4324,
@@ -82,7 +74,7 @@ LogBox.ignoreLogs(['new NativeEventEmitter']);
             if (res === 'granted') {
               console.log('LOCATION: Permission granted!')
 
-              if (Platform.OS === 'android' && Platform.Version > 28) {
+              if (deviceOS === 'android' && Platform.Version > 28) {
 
                 console.log('LOCATION: Android system detected -- requesting Background location')
                 request(PERMISSIONS.ANDROID.ACCESS_BACKGROUND_LOCATION).then(bgRes => {
@@ -153,33 +145,56 @@ LogBox.ignoreLogs(['new NativeEventEmitter']);
    else if (permissionGranted && userLocation){
     
    
-      ReactNativeForegroundService.add_task(
-        () => {
-        
-        console.log('background task running');
-        GetLocation.getCurrentPosition({
-          enableHighAccuracy: true,
-          timeout: 1000000,
-        })
-        .then(location => {
-            console.log(location);
-            setUserLocation({
-              latitude: location.latitude,
-              longitude: location.longitude
-            });
+      if (deviceOS === 'android')
+      {
+      /* works for Android only */
+        ReactNativeForegroundService.add_task(
+          () => {
+          
+          console.log('background task running');
+          GetLocation.getCurrentPosition({
+            enableHighAccuracy: true,
+            timeout: 1000000,
+          })
+          .then(location => {
+              console.log(location);
+              setUserLocation({
+                latitude: location.latitude,
+                longitude: location.longitude
+              });
 
-        })
-        .catch(error => {
-            const { code, message } = error;
-            console.warn(code, message);
-        }) }
-        , {
-        delay: 10000,
-        onLoop: true,
-        taskId: 'background_location_sniff',
-        onError: (e) => console.log('Error logging:', e), 
-      } 
-    )
+          })
+          .catch(error => {
+              const { code, message } = error;
+              console.warn(code, message);
+          }) }
+          , {
+          delay: 10000,
+          onLoop: true,
+          taskId: 'background_location_sniff',
+          onError: (e) => console.log('Error logging:', e), 
+        } 
+      )
+    }
+
+    else {
+      GetLocation.getCurrentPosition({
+        enableHighAccuracy: true,
+        timeout: 1000000,
+      })
+      .then(location => {
+          console.log(location);
+          setUserLocation({
+            latitude: location.latitude,
+            longitude: location.longitude
+          });
+
+      })
+      .catch(error => {
+          const { code, message } = error;
+          console.warn(code, message);
+      })
+    }
     
 
     const region = {
@@ -223,7 +238,7 @@ LogBox.ignoreLogs(['new NativeEventEmitter']);
   },
   image: {
     width: '100%',
-    height: 700,
+    height: 600,
     marginVertical: 8,
     justifyContent: 'center',
     alignItems: 'center',

@@ -37,6 +37,10 @@
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>This is a location tracking application so I need the location of the device</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+  	<string>This is a location tracking application to track the location every time</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>This is a location tracking application to track the location every time</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>

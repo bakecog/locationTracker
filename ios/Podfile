@@ -8,6 +8,14 @@ install! 'cocoapods', :deterministic_uuids => false
 target 'locationTracker' do
   config = use_native_modules!
 
+  permissions_path = '../node_modules/react-native-permissions/ios'
+  pod 'Permission-AppTrackingTransparency', :path => "#{permissions_path}/AppTrackingTransparency"
+  pod 'Permission-LocationAccuracy', :path => "#{permissions_path}/LocationAccuracy"
+  pod 'Permission-LocationAlways', :path => "#{permissions_path}/LocationAlways"
+  pod 'Permission-LocationWhenInUse', :path => "#{permissions_path}/LocationWhenInUse"
+  pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications"
+  
+  
   # Flags change depending on the env values.
   flags = get_default_flags()
 
