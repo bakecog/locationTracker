@@ -1,5 +1,5 @@
 # locationTracker
-WhereAmI is a location tracker application made with react native. 
+locationTracker is a location tracker application made with react native. 
 
 ## Description
 The application displays the map corresponding to the user's location.
