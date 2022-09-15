@@ -23,6 +23,7 @@ import Location from './Map';
 
 // Ignore some annoying logs
 LogBox.ignoreLogs(['LocationError: Location cancelled by another request']);
+LogBox.ignoreLogs(['CANCELLED Location cancelled by another request']);
 LogBox.ignoreLogs(['new NativeEventEmitter']);
  
 export const deviceOS = Platform.OS;
@@ -40,6 +41,18 @@ let targetPermission = deviceOS === 'ios' ? PERMISSIONS.IOS.LOCATION_WHEN_IN_USE
 
   function getLocationHandler() {
     setToggle(!isToggleOn);
+    GetLocation.getCurrentPosition({
+      enableHighAccuracy: true,
+      timeout: 1000000,
+    })
+    .then(location => {
+        console.log(location);
+        setUserLocation({
+          latitude: location.latitude,
+          longitude: location.longitude
+        });
+
+    })
   }
 
    useEffect(() => {
@@ -132,7 +145,7 @@ let targetPermission = deviceOS === 'ios' ? PERMISSIONS.IOS.LOCATION_WHEN_IN_USE
     return (
       <View style={styles.container}>
         <Button
-          onPress={() => setToggle(true)}
+          onPress={getLocationHandler}
           title={"locate me"}
         />
       </View>
