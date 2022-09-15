@@ -27,7 +27,7 @@ LogBox.ignoreLogs(['new NativeEventEmitter']);
  
 export const deviceOS = Platform.OS;
 
-let targetPermission = deviceOS === 'ios' ? PERMISSIONS.IOS.LOCATION_ALWAYS : PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION
+let targetPermission = deviceOS === 'ios' ? PERMISSIONS.IOS.LOCATION_WHEN_IN_USE : PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION
 
 
  export default function App(){
@@ -56,10 +56,7 @@ let targetPermission = deviceOS === 'ios' ? PERMISSIONS.IOS.LOCATION_ALWAYS : PE
         });
 
     })
-    /*setUserLocation({
-      latitude: 37.78825,
-      longitude: -122.4324,
-    });*/
+    
 
   check(targetPermission)
   .then(result => {
